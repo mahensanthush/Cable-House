@@ -6,9 +6,10 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
+// Update this in your backend server.js
 app.use(cors({
-    origin: '*', // This allows all domains (good for testing)
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: '*', // Allows your frontend to connect
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // <--- ADDED PATCH and OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json({ limit: '50mb' }));
