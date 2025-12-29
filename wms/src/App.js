@@ -49,8 +49,15 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               
-              {/* Public User Catalog */}
-              <Route path="/" element={<UserCatalog />} />
+              <Route path="/" element={
+              !userRole ? (
+              <Navigate to="/login" replace />
+              ) : userRole === 'admin' ? (
+              <Navigate to="/admin" replace />
+              ) : (
+               <Navigate to="/worker" replace />
+               )
+              } />
 
               {/* Admin Routes */}
               <Route path="/admin" element={
