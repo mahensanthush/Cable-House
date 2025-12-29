@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post('https://cable-house-backend.onrender.com/auth/login', {
+      const response = await axios.post('https://cable-house-backend.onrender.com/api/auth/login', {
         username,
         password
       });
