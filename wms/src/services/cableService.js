@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://cable-house-backend.onrender.com/api/orders';
+const API_URL = 'https://cable-house-backend.onrender.com/api';
 
 
 const getAuthHeader = () => {
