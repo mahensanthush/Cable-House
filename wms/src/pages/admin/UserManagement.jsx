@@ -9,11 +9,21 @@ const UserManagement = () => {
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', formData);
+      // ---------------------------------------------------------
+      // FIX 1: Changed URL from localhost to your Render Backend
+      // FIX 2: Added 'x-auth-token' header so the server knows you are Admin
+      // ---------------------------------------------------------
+      await axios.post(
+        'https://cable-house-backend.onrender.com/api/auth/register', 
+        formData,
+        { headers: { 'x-auth-token': localStorage.getItem('token') } }
+      );
+
       setMsg(`Success: ${formData.role} account created!`);
       setFormData({ username: '', password: '', role: 'user' });
     } catch (err) {
-      setMsg("Error: Username might already exist.");
+      console.error(err);
+      setMsg("Error: Username might already exist or server issue.");
     }
   };
 
