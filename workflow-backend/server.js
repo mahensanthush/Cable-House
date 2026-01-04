@@ -7,10 +7,12 @@ const app = express();
 
 // Middleware
 // Update this in your backend server.js
+// Middleware
 app.use(cors({
-    origin: '*', // Allows your frontend to connect
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // <--- ADDED PATCH and OPTIONS
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    // FIX IS HERE: Add 'x-auth-token' to this list
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'] 
 }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
