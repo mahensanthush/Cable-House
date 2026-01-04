@@ -90,14 +90,7 @@ const UserCatalog = () => {
               <div className="p-8 flex-1 flex flex-col">
                 <h3 className="text-xl font-black text-slate-800 mb-2 uppercase tracking-tight">{cable.cableName}</h3>
                 <p className="text-slate-400 text-xs mb-6 leading-relaxed font-medium italic truncate">{cable.description}</p>
-                <div className="space-y-3 mb-10 flex-1">
-                  {cable.dimensions?.map((d, i) => (
-                    <div key={i} className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-50 pb-2">
-                      <span>{d.label}</span>
-                      <span className="text-slate-900 bg-slate-50 px-2 py-0.5 rounded font-bold">{d.value}</span>
-                    </div>
-                  ))}
-                </div>
+               
                 <button 
                   onClick={() => handleConfirmOrder(cable)}
                   className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-blue-600 transition-all flex items-center justify-center gap-3 active:scale-95 shadow-xl shadow-slate-200"
