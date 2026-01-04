@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { 
-  LogOut, 
-  Trash2, 
-  ChevronLeft, 
-  ChevronRight, 
-  Menu,
-  BookOpen, // Icon for Catalog
-  Shield,   // Icon for Admin
-  Hammer    // Icon for Workshop
-} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { LogOut, Trash2, ChevronLeft, ChevronRight, Menu, BookOpen, Shield, Hammer } from 'lucide-react';
 import { getWorkerOrders, deleteOrder } from '../services/cableService';
 
-const Sidebar = () => {
+// 1. Accept props here
+const Sidebar = ({ isExpanded, toggleSidebar }) => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
-  const [isExpanded, setIsExpanded] = useState(true); // <--- New State
+  // REMOVED: const [isExpanded, setIsExpanded] = useState(true); <-- We use props now
   const userRole = localStorage.getItem('userRole');
 
   const refresh = async () => {
@@ -43,47 +35,27 @@ const Sidebar = () => {
     <div 
       className={`${isExpanded ? 'w-64' : 'w-20'} h-screen bg-slate-900 text-white flex flex-col fixed left-0 top-0 z-50 transition-all duration-300 shadow-2xl`}
     >
-      {/* 1. Header & Toggle Button */}
       <div className={`p-6 flex items-center ${isExpanded ? 'justify-between' : 'justify-center'} mb-4`}>
         {isExpanded && (
           <h1 className="text-sm font-black uppercase tracking-widest text-blue-500 whitespace-nowrap">
             Cable House
           </h1>
         )}
+        
+        {/* 2. Use the toggleSidebar prop function */}
         <button 
-          onClick={() => setIsExpanded(!isExpanded)} 
+          onClick={toggleSidebar} 
           className="text-slate-400 hover:text-white transition-colors"
         >
           {isExpanded ? <ChevronLeft size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* 2. Navigation Links */}
       <nav className="flex-1 px-3 space-y-2">
-        {/* Helper function to keep links clean */}
-        <NavLink 
-          to="/" 
-          icon={<BookOpen size={20} />} 
-          label="Catalog" 
-          visible={userRole === 'user'} 
-          expanded={isExpanded} 
-        />
-        <NavLink 
-          to="/admin" 
-          icon={<Shield size={20} />} 
-          label="Admin Panel" 
-          visible={userRole === 'admin'} 
-          expanded={isExpanded} 
-        />
-        <NavLink 
-          to="/worker" 
-          icon={<Hammer size={20} />} 
-          label="Workshop" 
-          visible={userRole === 'worker'} 
-          expanded={isExpanded} 
-        />
+        <NavLink to="/" icon={<BookOpen size={20} />} label="Catalog" visible={userRole === 'user'} expanded={isExpanded} />
+        <NavLink to="/admin" icon={<Shield size={20} />} label="Admin Panel" visible={userRole === 'admin'} expanded={isExpanded} />
+        <NavLink to="/worker" icon={<Hammer size={20} />} label="Workshop" visible={userRole === 'worker'} expanded={isExpanded} />
 
-        {/* 3. Live Queue (Hidden when contracted) */}
         <div className={`mt-10 border-t border-slate-800 pt-6 transition-opacity duration-300 ${isExpanded ? 'opacity-100' : 'opacity-0 hidden'}`}>
           <div className="flex justify-between items-center mb-4 px-2">
             <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]">Live Queue</p>
@@ -108,12 +80,10 @@ const Sidebar = () => {
                 </button>
               </div>
             ))}
-            {orders.length === 0 && <p className="text-[10px] text-slate-600 text-center italic">No active orders</p>}
           </div>
         </div>
       </nav>
 
-      {/* 4. Logout Button */}
       <div className="p-3 mb-2">
         <button 
           onClick={handleLogout} 
@@ -127,14 +97,14 @@ const Sidebar = () => {
   );
 };
 
-// Simple sub-component to handle the icons + text logic
+// Helper component stays the same
 const NavLink = ({ to, icon, label, visible, expanded }) => {
   if (!visible) return null;
   return (
     <Link 
       to={to} 
       className={`flex items-center gap-3 p-3 rounded-xl transition-all hover:bg-slate-800 hover:text-white text-slate-400 ${expanded ? 'justify-start' : 'justify-center'}`}
-      title={!expanded ? label : ''} // Show tooltip when collapsed
+      title={!expanded ? label : ''} 
     >
       {icon}
       {expanded && <span className="font-bold text-xs uppercase tracking-wider">{label}</span>}
